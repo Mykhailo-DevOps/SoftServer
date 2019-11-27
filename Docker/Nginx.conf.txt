@@ -1,0 +1,17 @@
+events {
+        worker_connections 200000;
+        # multi_accept on;
+}
+
+http {
+        upstream backend {
+                server ec2-35-181-155-68.eu-west-3.compute.amazonaws.com;
+                server ec2-35-180-164-164.eu-west-3.compute.amazonaws.com;
+        }
+        server {
+                listen 80;
+                location / {
+                        proxy_pass http://backend;
+                }
+        }
+}
