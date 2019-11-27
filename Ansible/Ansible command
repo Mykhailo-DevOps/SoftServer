@@ -1,0 +1,44 @@
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install ansible
+# upload my keys in directory ssh/
+sudo cmod 400 key 
+mkdir Ansible
+cd Ansible
+ansible -i hosts.txt all -m ping
+nano ansible.cfg 
+# write this in file ansible.cfg
+[defaults] 
+host_key_checking = false
+inventory         = ./hosts.txt
+#
+ansible all -m ping
+ansible all -m yum -a "name=httpd state=latest" -b # install apache2 server
+ansible all -m service -a "name=httpd state=started enable=yes" -b
+ansible all -m yum -a "name=php state=latest" -b
+ansible all -m yum -a "name=sql state=latest" -b
+ansible all -m service -a "name=sql state=started enable=yes" -b
+# created main.yml
+- name: Install python Mysql package #required for mysql_db tasks
+  apt: name=python-mysqldb state=present
+
+- name: 3. Create a new database
+  mysql_db: name=demo state=present collation=utf8_general_ci
+
+- name: 4. Create a database user
+  mysql_user: name=demo password=demo priv=*.*:ALL host=localhost state=present
+
+- name: 5a. Copy sample data
+  copy: src=dump.sql dest=/tmp/dump.sql
+
+- name: 5b. Insert sample data
+  shell: cat /tmp/dump.sql | mysql -u demo -pdemo demo
+
+- name: 6a. Install MySQL extension for PHP
+  apt: name=php5-mysql state=present
+
+- name: 6b. Restart Apache
+  service: name=apache2 state=restarted
+
+- name: 7. install Hello World PHP script with database
+  copy: src=db.php dest=/var/www/html/db.php mode=0664
