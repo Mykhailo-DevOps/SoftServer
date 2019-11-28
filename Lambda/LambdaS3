@@ -1,1 +1,35 @@
-S3
+# create 2 roles for Lambda function "s3 read only and s3 full access" in IAM AWS #
+# shows list my s3 bucket #
+ import boto3, os
+
+def lambda_handler(event, context): # main function 
+    myS3 = boto3.client('s3')
+    try:
+     results = myS3.list_buckets()
+     print(results)
+     output = ""
+     for bucket in results['Buckets']:
+      output = output + bucket['Name'] + "<br>"
+     return ("<h1><font color=green>S3 Bucket List:</font></h1><br><br>" + output)
+    except:
+     return ("<h1><font color=Error!</font></h1><br><br>" )
+     
+# Python script for create s3 bucket in aws #
+import boto3, os, time
+
+AWS_DEFAULT_REGION = "eu-west-3" #Region where Lambda running
+os.environ['AWS_DEFAULT_REGION'] = AWS_DEFAULT_REGION
+
+bucketname = "lambda.create.me.on-" + str(time.time())
+
+def lambda_handler(event, context): # main function 
+    
+    myS3 = boto3.resource('s3')
+    try:
+     results = myS3.create_bucket(
+           Bucket= bucketname,
+           CreateBucketConfiguration = {'LocationConstraint':AWS_DEFAULT_REGION}
+           )
+     return ("<h1><font color=green>S3 Bucket Created Successfully:</font></h1><br><br>" + str(results))
+    except:
+     return ("<h1><font color=red>Error!</font></h1><br><br>")
