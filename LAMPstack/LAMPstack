@@ -1,1 +1,30 @@
-t
+# APACHE:
+sudo apt update
+sudo apt install apache2
+# Installing MySQL:
+sudo apt install mysql-server
+sudo mysql_secure_installation
+# This will ask if you want to configure the VALIDATE PASSWORD PLUGIN
+Answer Y for yes
+There are three levels of password validation policy:
+
+LOW    Length >= 8
+MEDIUM Length >= 8, numeric, mixed case, and special characters
+STRONG Length >= 8, numeric, mixed case, special characters and dictionary                  file
+
+Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 1 #
+sudo mysql
+mysql> SELECT user,authentication_string,plugin,host FROM mysql.user;
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '*********';
+mysql> FLUSH PRIVILEGES;
+mysql> SELECT user,authentication_string,plugin,host FROM mysql.user;
+mysql> exit
+# Installing PHP #
+sudo apt install php libapache2-mod-php php-mysql
+sudo nano /etc/apache2/mods-enabled/dir.conf
+# Move the PHP index file #
+# <IfModule mod_dir.c>
+    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+</IfModule> # 
+sudo systemctl restart apache2
+sudo systemctl status apache2
