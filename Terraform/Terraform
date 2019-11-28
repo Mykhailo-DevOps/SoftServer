@@ -9,7 +9,7 @@ resource "aws_instance" "My-Ubuntu" {
   tags = {
     Name    = "My Ubuntu Server"
     Owner   = "Mykhailo Kolodiy"
-    Project = "Lesson-1 Terraform Ubuntu"
+    Project = "Terraform Ubuntu"
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_instance" "My-Linux" {
   tags = {
     Name    = "My Amazon Server"
     Owner   = "Mykhailo Kolodiy"
-    Project = "Lesson-1 Terraform"
+    Project = "Terraform"
 
 
 #------------------------
