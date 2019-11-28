@@ -1,1 +1,15 @@
-d
+echo "--------------Build Started-----------------"
+cat <<EOF > index.html
+<html>
+<body bgcolor=black>
+<center>
+<h2><font color=yellow>Hello from Mykhailo</font></h2>
+
+<font color=blue>www.mykhailo.net</font>
+
+</center>
+</body>
+</html>
+EOF
+
+echo "--------------Build Finished-----------------"
